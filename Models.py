@@ -29,4 +29,14 @@ class WordEmbedding(nn.Module):
         self.embeds = nn.Embedding(vocab_size, Embedding_dim)
 
     def forward(self, word_id):
+        # Pass the word id through the embedding layer,
         return self.embeds(word_id)
+
+
+class concatenate(nn.Module):
+
+    def __init__(self):
+        super(ImgLinear, self).__init__()
+
+    def forward(image_features, word_embedding):
+        

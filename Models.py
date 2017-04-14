@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torchvision.models as models
 import torch.nn.functional as F
-
+import torch.autograd as autograd
 
 
 class ImgLinear(nn.Module):
@@ -21,22 +21,43 @@ class ImgLinear(nn.Module):
 
 class WordEmbedding(nn.Module):
 
-    def __init__(self, vocab_size, Embedding_dim):
+    def __init__(self, vocab_size, embedding_dim):
         # calls the init function of nn.Module.  Dont get confused by syntax,
         # just always do it in an nn.Module
         super(ImgLinear, self).__init__()
 
-        self.embeds = nn.Embedding(vocab_size, Embedding_dim)
+        self.embeds = nn.Embedding(vocab_size, embedding_dim)
 
     def forward(self, word_id):
         # Pass the word id through the embedding layer,
         return self.embeds(word_id)
 
 
-class concatenate(nn.Module):
+# class Merge(nn.Module):
+#
+#     def __init__(self):
+#         super(ImgLinear, self).__init__()
+#
+#     def forward(self, image_features, word_embedding):
+#
 
-    def __init__(self):
-        super(ImgLinear, self).__init__()
 
-    def forward(image_features, word_embedding):
-        
+class LSTMClassifier(nn.Module):
+
+    def __init__(self, embedding_dim, hidden_dim, vocab_size, ans_size):
+        super(LSTMClassifier, self).__init__()
+        self.hidden_dim = hidden_dim
+        self.lstm = nn.LSTM(embedding_dim, hidden_dim)
+
+        self.hidden2Classifier == nn.Linear(hidden_dim, ans_size)
+        self.hidden = self.init_hidden()
+
+    def init_hidden(self):
+        return (autograd.Variable(torch.zeros(1, 1, self.hidden_dim)),
+                autograd.Variable(torch.zeros(1, 1, self.hidden_dim)))
+
+    def forward(self, embeds):
+        lstm_out, self.hidden = self.lstm(embeds.view(len(embeds), 1, -1))
+        ans_space = self.hidden2Classifier(lstm_out.view(len(embeds), -1))
+        ans_scores = F.log_softmax(ans_space)
+        return ans_scores

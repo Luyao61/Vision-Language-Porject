@@ -16,9 +16,9 @@ vgg_19 = models.vgg19(pretrained=True).features
 # img_path = "{s}2014/COCO_{s}2014_{d:012d}.jpg".format(s=tr_or_val, d=num,)
 
 def load_img(tr_or_val, img_list):
-    dataset = torch.randn(len(img_list), 3, 640, 480)
+    dataset = torch.randn(5, 4096)
 
-    for idx, img_idx in enumerate(img_list):
+    for idx, img_idx in enumerate(img_list[:5]):
         img_path = "{s}2014/COCO_{s}2014_{d:012d}.jpg".format(s=tr_or_val, d=img_idx,)
         try:
             img = Image.open(img_path)
@@ -29,10 +29,10 @@ def load_img(tr_or_val, img_list):
         img.Normailze(mean = [ 0.485, 0.456, 0.406 ],
                       std = [ 0.229, 0.224, 0.225 ])
 
-        dataset[idx] = img
-    return dataset
+        dataset[idx] = vgg_19.forward(img)
+    torch.save(dataset, 'test.pth')
 
-val_image_indices = np.genfromtxt('cocoqa/test/img_ids.txt', dtype=int)
-val_img = load_img('val', val_image_indices)
+val_image_indices = np.genfromtxt('cocoqa/release/test/img_ids.txt', dtype=int)
+load_img('val', val_image_indices)
 
-print(val_img.size())
+# print(val_img.size())

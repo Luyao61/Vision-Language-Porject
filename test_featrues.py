@@ -21,47 +21,5 @@ predictions = classifier(Variable(val_features[0].unsqueeze(0)))
 probs, indices = (-nn.Softmax()(predictions).data).sort()
 probs = (-probs).numpy()[0][:10]; indices = indices.numpy()[0][:10]
 preds = [imagenetClasses[idx] + ': ' + str(prob) for (prob, idx) in zip(probs, indices)]
-
-print(string.join(preds, '\n'))
-print()
-
-
-predictions = classifier(Variable(val_features[1].unsqueeze(0)))
-
-probs, indices = (-nn.Softmax()(predictions).data).sort()
-probs = (-probs).numpy()[0][:10]; indices = indices.numpy()[0][:10]
-preds = [imagenetClasses[idx] + ': ' + str(prob) for (prob, idx) in zip(probs, indices)]
-
-print(string.join(preds, '\n'))
-print()
-
-predictions = classifier(Variable(val_features[2].unsqueeze(0)))
-
-probs, indices = (-nn.Softmax()(predictions).data).sort()
-probs = (-probs).numpy()[0][:10]; indices = indices.numpy()[0][:10]
-preds = [imagenetClasses[idx] + ': ' + str(prob) for (prob, idx) in zip(probs, indices)]
-
-print(string.join(preds, '\n'))
-print()
-
-
-
-
-predictions = classifier(Variable(val_features[3].unsqueeze(0)))
-
-probs, indices = (-nn.Softmax()(predictions).data).sort()
-probs = (-probs).numpy()[0][:10]; indices = indices.numpy()[0][:10]
-preds = [imagenetClasses[idx] + ': ' + str(prob) for (prob, idx) in zip(probs, indices)]
-
-print(string.join(preds, '\n'))
-print()
-
-
-predictions = classifier(Variable(val_features[4].unsqueeze(0)))
-
-probs, indices = (-nn.Softmax()(predictions).data).sort()
-probs = (-probs).numpy()[0][:10]; indices = indices.numpy()[0][:10]
-preds = [imagenetClasses[idx] + ': ' + str(prob) for (prob, idx) in zip(probs, indices)]
-
 print(string.join(preds, '\n'))
 print()

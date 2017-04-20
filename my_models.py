@@ -24,7 +24,7 @@ class WordEmbedding(nn.Module):
     def __init__(self, vocab_size, embedding_dim):
         # calls the init function of nn.Module.  Dont get confused by syntax,
         # just always do it in an nn.Module
-        super(ImgLinear, self).__init__()
+        super(WordEmbedding, self).__init__()
 
         self.embeds = nn.Embedding(vocab_size, embedding_dim)
 
@@ -68,10 +68,10 @@ class LSTM(nn.Module):
 class Classifier(nn.Module):
 
     def __init__(self, input_dim, output_dim):
-        super(Classifier, self),__init__()
+        super(Classifier, self).__init__()
         self.linear = nn.Linear(input_dim, output_dim)
 
     def forward(self, lstm_out):
-        ans_space = self.linear(lstm_out.view(len(embeds), -1))
+        ans_space = self.linear(lstm_out.view(len(lstm_out), -1))
         ans_scores = F.log_softmax(ans_space)
         return ans_scores

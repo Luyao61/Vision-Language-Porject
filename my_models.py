@@ -51,15 +51,19 @@ class LSTM(nn.Module):
         self.hidden_dim = hidden_dim
         self.lstm = nn.LSTM(embedding_dim, hidden_dim)
         # self.hidden2Classifier == nn.Linear(hidden_dim, ans_size)
-        self.hidden = self.init_hidden()
+        self.init_hidden()
 
     def init_hidden(self):
-        return (autograd.Variable(torch.zeros(1, 1, self.hidden_dim)),
+        self.hidden = (autograd.Variable(torch.zeros(1, 1, self.hidden_dim)),
                 autograd.Variable(torch.zeros(1, 1, self.hidden_dim)))
+
+    def init_hidden_cuda(self):
+        self.hidden = (autograd.Variable(torch.zeros(1, 1, self.hidden_dim).cuda()),
+                autograd.Variable(torch.zeros(1, 1, self.hidden_dim).cuda()))
 
     def forward(self, embeds):
         embeds = self.drop(embeds)
-        lstm_out, self.hidden = self.lstm(embeds.view(len(embeds), 1, -1))
+        lstm_out, self.hidden = self.lstm(embeds.view(len(embeds), 1, -1), self.hidden)
         # ans_space = self.hidden2Classifier(lstm_out.view(len(embeds), -1))
         # ans_scores = F.log_softmax(ans_space)
         return lstm_out

@@ -153,20 +153,23 @@ def train_model(model_list, criterion, optimizer, lr_scheduler, num_epochs=25):
                 optimizer.zero_grad()
 
                 # forward
-                i_embedding = img_embed(current_f).view(1,-1)
+                i_embedding = img_embed(current_f)
 
                 w_embedding = word_embed(current_q)
 
-                # lstm_input = torch.cat((i_embedding, w_embedding), 0)
+                lstm_input = torch.Tensor(w_embedding.size(0), w_embedding.size(1) + i_embedding.size(1))
 
-                # lstm_input = lstm_input.view(len(lstm_input), 1, -1)
+                for idx, w_embedding_i in enumerate(w_embedding):
+                    lstm_input[idx] = torch.cat((w_embedding_i, i_embedding[0]), 0).data
+                lstm_input = Variable(lstm_input)
+
                 if use_gpu:
                     lstm.init_hidden_cuda()
+                    lstm_input = lstm_input.cuda()
                 else:
                     lstm.init_hidden()
-
-                lstm(i_embedding.view(1, 1, -1))
-                output = lstm(w_embedding.view(len(w_embedding), 1, -1))
+                # print(lstm_input.view(len(lstm_input), 1, -1))
+                output = lstm(lstm_input.view(len(lstm_input), 1, -1))
 
                 class_score = classifier(output[-1])
                 _, preds = torch.max(class_score.data, 1)
@@ -201,10 +204,10 @@ def train_model(model_list, criterion, optimizer, lr_scheduler, num_epochs=25):
                 # best_models[1] = copy.deepcopy(word_embed)
                 # best_models[2] = copy.deepcopy(lstm)
                 # best_models[3] = copy.deepcopy(classifier)
-                torch.save(img_embed, 'models/04-20/img_embed.pth')
-                torch.save(word_embed, 'models/04-20/word_embed.pth')
-                torch.save(lstm, 'models/04-20/lstm.pth')
-                torch.save(classifier, 'models/04-20/classifier.pth')
+                torch.save(img_embed, 'models2/04-20/img_embed.pth')
+                torch.save(word_embed, 'models2/04-20/word_embed.pth')
+                torch.save(lstm, 'models2/04-20/lstm.pth')
+                torch.save(classifier, 'models2/04-20/classifier.pth')
 
 
         print()
@@ -219,8 +222,8 @@ def train_model(model_list, criterion, optimizer, lr_scheduler, num_epochs=25):
 models = []
 models.append( my_models.ImgLinear(4096, 512))
 models.append( my_models.WordEmbedding(vocab_size + 1 ,512))
-models.append( my_models.LSTM(512, 512))
-models.append( my_models.Classifier(512, a_size))
+models.append( my_models.LSTM(512 + 512, 1024))
+models.append( my_models.Classifier(1024, a_size))
 
 if use_gpu:
     for model in models:
@@ -237,45 +240,3 @@ optimizer = torch.optim.SGD([
 
 models = train_model(models, criterion, optimizer, exp_lr_scheduler, num_epochs=60)
 torch.save(models, 'model_04_20.pth')
-
-
-
-
-
-
-
-
-
-
-#
-# FI = Variable(train_features_0[0])
-# featureTransfer = my_models.FeatureTransfer(512, 1024)
-# V_I = featureTransfer(FI)
-#
-# word_embed = my_models.WordEmbedding2(vocab_size + 1, 500)
-# Q_embed = word_embed(Variable(torch.LongTensor(sequences_train_q[0])))
-# lstm = nn.LSTM(500, 1024)
-# hidden = (autograd.Variable(torch.zeros(1, 1, 1024)),
-#         autograd.Variable(torch.zeros(1, 1, 1024)))
-# lstm_output, hidden = lstm(Q_embed.view(len(Q_embed), 1, -1), hidden)
-#
-# V_Q = lstm_output[-1].view(1, 1024)
-#
-# atten = my_models.Attention(1024, 512)
-#
-# # stack 1
-# p = atten(V_I, V_Q)
-# V_I_next = torch.mm(torch.transpose(p, 0, 1), V_I)
-# V_Q = V_I_next + V_Q
-#
-# # stack 2
-# p = atten(V_I, V_Q)
-# V_I_next = torch.mm(torch.transpose(p, 0, 1), V_I)
-# V_Q = V_I_next + V_Q
-#
-#
-# classifier = my_models.Classifier(1024, a_size)
-# class_score = classifier(V_Q)
-# _, preds = torch.max(class_score.data, 1)
-#
-# print(preds)

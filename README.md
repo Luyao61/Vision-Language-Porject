@@ -1,9 +1,13 @@
 # Vision-Language-Project
 
 This is an course project for [CS 6501-004: Vision & Language][1]
+
 This project reimplements some models using pytorch from the follwoing papers:
+
 -[Exploring Models and Data for Image Question Answering][2]
+
 -[Stacked Attention Networks for Image Question Answering][3]
+
 -[Ask Your Neurons: A Neural-based Approach to Answering Questions about Images][4]
 
 ## model VIS+LSTM

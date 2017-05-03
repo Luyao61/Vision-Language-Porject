@@ -6,9 +6,9 @@ This project reimplements some models using pytorch from the follwoing papers:
 -[Stacked Attention Networks for Image Question Answering][3]
 -[Ask Your Neurons: A Neural-based Approach to Answering Questions about Images][4]
 
-![Model1 architecture](Vision-Language-Project/graphes/Model_1_hd.png)
-![Model2 architecture](Vision-Language-Project/graphes/Model_2_hd.png)
-![Model3 architecture](Vision-Language-Project/graphes/Model_3_hd.png)
+![Model1 architecture](https://github.com/Luyao61/Vision-Language-Project/blob/master/graphes/Model_1_hd.png)
+![Model2 architecture](https://github.com/Luyao61/Vision-Language-Project/blob/master/graphes/Model_2_hd.png)
+![Model3 architecture](https://github.com/Luyao61/Vision-Language-Project/blob/master/graphes/Model_3_hd.png)
 
 ## Setup
 

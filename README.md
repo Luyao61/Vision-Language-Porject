@@ -6,8 +6,11 @@ This project reimplements some models using pytorch from the follwoing papers:
 -[Stacked Attention Networks for Image Question Answering][3]
 -[Ask Your Neurons: A Neural-based Approach to Answering Questions about Images][4]
 
+## model VIS+LSTM
 ![Model1 architecture](https://github.com/Luyao61/Vision-Language-Project/blob/master/graphes/Model_1_hd.png)
+## model VIS+LSTM-2
 ![Model2 architecture](https://github.com/Luyao61/Vision-Language-Project/blob/master/graphes/Model_2_hd.png)
+## model SANS
 ![Model3 architecture](https://github.com/Luyao61/Vision-Language-Project/blob/master/graphes/Model_3_hd.png)
 
 ## Setup
@@ -19,11 +22,11 @@ Requirements:
 
 ## Usage
 
-### Download the [MSCOCO][7] train+val images 
-### Download the [VQA][5]
+### Download the [MSCOCO][7] train+val images & Download the [VQA][5]
 `sh data/download_data.sh`
 
-### Extract image features and place then in features\
+### Extract image features 
+place then in `features\`
 `python get_features.py`
 `python get_features_SAN.py`
 
